@@ -54,6 +54,7 @@ Step 3 : Basic Usage<br><br>
       function generate(){
           return view('qrcode');
       }
+      <br><br>
  Step 5: create route<br><br>
  
     Route::get('generate',[Qrcontroller::class,'generate']);
