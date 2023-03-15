@@ -19,7 +19,7 @@ If not installed then follow this steps as<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;  https://windows.php.net/downloads/pecl/deps/<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;  - copy all CORE_* and IM_MOD_* file and pass into C:\xampp\apache\bin<br><br>
 
-After iNsatlling imagick follow below steps<br><br>
+After insatlling imagick follow below steps<br><br>
 Step 1:  Create Laravel Project<br><br>
 &nbsp;&nbsp;composer create-project --prefer-dist laravel/laravel l9_qrcode<br><br>
 &nbsp;&nbsp;  or <br><br>
