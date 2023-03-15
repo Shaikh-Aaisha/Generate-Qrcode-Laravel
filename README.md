@@ -1,5 +1,10 @@
 <h1>Steps for generating QrCode in Laravel 9</h1>
 
+##About
+
+"laravel": "9"<br><br>
+"php": "8.0.25"<br><br>
+"simplesoftwareio/simple-qrcode": "^4.2"<br><br>
 Before you start this project, you need to make sure that you installed imagick already.<br><br>
 If not installed then follow this steps as<br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;1- Pre-installation<br><br>
