@@ -1,0 +1,1 @@
+# Generate-Qrcode-Laravel
