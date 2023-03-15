@@ -1,66 +1,81 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1>Steps for generating QrCode in Laravel 9</h1>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Before you start this project, you need to make sure that you installed imagick already.<br><br>
+If not installed then follow this steps as<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1- Pre-installation<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  - PHP version<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  - Architecture (64/86)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  - Thread Safety (enabled)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2- Download and install ImageMagick for Windows<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;   https://www.imagemagick.org/script/download.php#windows<br><br>
 
-## About Laravel
+&nbsp;&nbsp;&nbsp;&nbsp;3- Download Imagick for PHP<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  https://pecl.php.net/package/imagick/3.7.0/windows<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  - copy php_imagick.dll and pass into C:\xampp\php\ext<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  - open php.ini (Dynamic Extensions)<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;    extension=php_imagick.dll<br><br>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+&nbsp;&nbsp;&nbsp;&nbsp;4- Download required Imagick binaries<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  https://windows.php.net/downloads/pecl/deps/<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;  - copy all CORE_* and IM_MOD_* file and pass into C:\xampp\apache\bin<br><br>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+After iNsatlling imagick follow below steps<br><br>
+Step 1:  Create Laravel Project<br><br>
+&nbsp;&nbsp;composer create-project --prefer-dist laravel/laravel l9_qrcode<br><br>
+&nbsp;&nbsp;  or <br><br>
+&nbsp;&nbsp;  laravel new l9_qrcode<br><br>
+Step 2 : Install Package and Configure<br><br>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  composer require simplesoftwareio/simple-qrcode
+  
+  Open config/app.php file and put the code like below:<br><br>
+    'providers' => [
+      ....
+      SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+    ],
 
-## Learning Laravel
+    'aliases' => [
+      ....
+      'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+    ],
+Step 3 : Basic Usage<br><br>
+   - The basic syntax is:<br><br>
+      QrCode::size(100)->generate('Hello Qr Code');<br><br>
+    
+   - Size: We can set the size of the QR code image.<br><br>
+    
+      QrCode::size(300)->generate('Hello Qr Code');<br><br>
+    
+   - Color: We can also set background color.<br><br>
+      QrCode::size(250)->backgroundColor(255,255,204)->generate('Hello Qr Code');<br><br>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+ Step 4 : create controller: Qrcontroller<br><br>
+    - write function:
+      function generate(){
+          return view('qrcode');
+      }
+ Step 5: create route<br><br>
+ 
+    Route::get('generate',[Qrcontroller::class,'generate']);
+    
+ Step 6 : Generate in Blade File   <br><br>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <title>Laravel QR Code Example</title>
+    </head>
+    <body>
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    <div class="text-center" style="margin-top: 50px;">
+        <h3>Laravel QR Code Example</h3>
+        <div>
+            <img src="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate('Generate any QR Code!')) !!} ">
+        </div>
+       <div> <a href="data:image/png;base64, {!! base64_encode(QrCode::format('png')->size(300)->generate('Generate any QR Code!')) !!} " download>Downloads</a></div>
+        <p>My Qr Code</p>
+    </div>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    </body>
+    </html>
+    
